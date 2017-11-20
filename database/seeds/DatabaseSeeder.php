@@ -15,6 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(PlaceTypeSeeder::class);
         $this->call(AmentityTypeSeeder::class);
-        $this->call(AnnouncementTypeSeedermodel::class);
+        $this->call(AnnouncementTypeSeeder::class);
     }
 }

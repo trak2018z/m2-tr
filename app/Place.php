@@ -11,4 +11,8 @@ class Place extends Model
     public function placeType(){
         return $this->belongsTo('App\PlaceType','place_type_id','id');
     }
+
+    public function announcements(){
+        return $this->hasManyThrough('App\PlaceInHood','App\Announcement','place_id','announcement_id','id','id');
+    }
 }
