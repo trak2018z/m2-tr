@@ -23,7 +23,7 @@ class RoleSeeder extends Seeder
         Role::create([
             'name' => 'Administrator',
             'token' => 'ROLE_ADMIN',
-            'permissions' => 255
+            'permissions' => 127
         ]);
 
         Role::create([
