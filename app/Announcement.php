@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Announcement extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = ['title','description','latitude','longitude','address_short','address','max_persons','dimension','phone','email','user','announcement_type_id'];
 
     public function setTitleAttribute($value)

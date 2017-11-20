@@ -18,7 +18,7 @@ class CreatePlaceInHoodsTable extends Migration
             $table->integer('announcement_id')->unsigned();
             $table->foreign('announcement_id')->references('id')->on('announcements');
             $table->integer('place_id')->unsigned();
-            $table->foreign('place_id')->references('id')->on('places');
+            $table->foreign('place_id')->references('id')->on('places')->onDelete("CASCADE");
             $table->timestamps();
         });
     }

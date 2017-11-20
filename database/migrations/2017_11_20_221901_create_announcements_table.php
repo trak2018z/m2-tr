@@ -32,6 +32,7 @@ class CreateAnnouncementsTable extends Migration
             $table->foreign('announcement_type_id')->references('id')->on('announcement_types');
             $table->integer('user')->unsigned();
             $table->foreign('user')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

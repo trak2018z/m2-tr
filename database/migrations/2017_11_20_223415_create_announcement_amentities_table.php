@@ -18,7 +18,7 @@ class CreateAnnouncementAmentitiesTable extends Migration
             $table->integer('announcement_id')->unsigned();
             $table->foreign('announcement_id')->references('id')->on('announcements');
             $table->integer('amentity_id')->unsigned();
-            $table->foreign('amentity_id')->references('id')->on('amentities');
+            $table->foreign('amentity_id')->references('id')->on('amentities')->onDelete("CASCADE");
             $table->timestamps();
         });
     }
