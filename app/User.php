@@ -49,7 +49,7 @@ class User extends Authenticatable
     {
         $role = $this->role;
         // Check if the user is a root account
-        if($role->token == 'admin' || empty($roles)) {
+        if($role->token == 'ADMIN_ROLE' || empty($roles)) {
             return true;
         }
         if(is_array($roles)){
