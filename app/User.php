@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','role_id'
     ];
 
     /**
@@ -32,4 +32,36 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function rates(){
+        return $this->hasMany('App\Rate','user_id','id');
+    }
+
+    public function role(){
+        return $this->hasOne('App\Role','id','role_id');
+    }
+
+    public function hasRole($roles)
+    {
+        $role = $this->role;
+        // Check if the user is a root account
+        if($role->token == 'admin' || empty($roles)) {
+            return true;
+        }
+        if(is_array($roles)){
+            foreach($roles as $need_role){
+                if($this->checkIfUserHasRole($need_role, $role)) {
+                    return true;
+                }
+            }
+        } else{
+            return $this->checkIfUserHasRole($roles, $role);
+        }
+        return false;
+    }
+
+    private function checkIfUserHasRole($need_role, $role)
+    {
+        return (strtolower($need_role)==strtolower($role->name)) ? true : false;
+    }
 }
