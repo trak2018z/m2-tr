@@ -24,7 +24,7 @@ class CheckRole
         {
             return $next($request);
         }
-        return abort(403,'Unauthorized');
+        return abort(403,'Unauthorized.');
     }
 
     private function getRequiredRoleForRoute(Route $route)

@@ -12,3 +12,5 @@
 */
 
 Route::get('/','IndexController@index')->name('home');
+
+Route::get('/auth','UserController@login');
