@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+use Auth;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
@@ -22,7 +24,7 @@ class UserController extends Controller
             'timeout' => 5,
             "http_errors" => false,
         ]);
-        return $response->getBody();
+        return response()->json(json_decode($response->getBody()));
     }
 
     /**
@@ -56,6 +58,10 @@ class UserController extends Controller
         //
     }
 
+    public function me(){
+        return $this->show(Auth::id());
+    }
+
     /**
      * Display the specified resource.
      *
@@ -64,7 +70,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        $user->role;
+        return response()->json($user);
     }
 
     /**

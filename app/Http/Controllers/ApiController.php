@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 class ApiController extends Controller
 {
 
-    public function redirect(Request $request){
-        return redirect()->route('log_in');
+    public function unauthorized(Request $request){
+        return response()->json([
+            "response" => "Unauthorized.",
+        ],401);
     }
 }

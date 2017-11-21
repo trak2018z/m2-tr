@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+Debugbar::disable();
 
 /*
 |--------------------------------------------------------------------------
@@ -13,20 +13,21 @@ use Illuminate\Http\Request;
 |
 */
 
-
+Route::get('/401','ApiController@unauthorized')->name('login');
 
 Route::group(['prefix' => '/user'], function(){
     Route::post('/auth','UserController@login');
+
 });
 
-Route::group(['prefix' => 'admin', 'middleware' => ['auth:api']], function() {
+Route::group(['middleware' => ['auth:api']], function() {
 
     Route::group(['middleware' => 'roles', 'roles' => ['ROLE_ADMIN']], function(){
 
     });
 
     Route::group(['prefix' => '/user'], function(){
-
+        Route::get('/me','UserController@me');
     });
 
 });
