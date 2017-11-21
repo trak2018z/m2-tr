@@ -14,7 +14,7 @@ class UserController extends Controller
             'form_params' => [
                 'grant_type' => 'password',
                 'client_id' => 2,
-                'client_secret' => 'ahMPj3wu9puNwIe3JEVywg7Ghzj7giyENK4G4G9i',
+                'client_secret' => env('PASSPORT_SECRET'),
                 'username' => $request->username,
                 'password' => $request->password,
                 'scope' => '',
