@@ -1,4 +1,4 @@
-#M2 Project repository
+# M2 Project repository
 This is repository for M2 Project. Web application which provides API for flat announcement webiste.
 
 [Here](https://github.com/HubertSadecki/m2/wiki/M2-API) is available wikipedia for this repository 
