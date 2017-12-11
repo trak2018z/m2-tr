@@ -104,7 +104,7 @@ class UserController extends Controller
 
         } catch (Exception $e) {
 
-            Log::logError($e->getMessage(), $e->getCode(), $e->getLine());
+            Log::logError($e->getMessage(). " in ". $e->getFile(), $e->getCode(), $e->getLine());
 
             return response()->json([
                 "success" => false,
