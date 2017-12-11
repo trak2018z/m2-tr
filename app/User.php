@@ -59,6 +59,8 @@ class User extends Authenticatable
         'password', 'remember_token', 'created_at', 'updated_at', 'role_id', 'hash'
     ];
 
+
+
     public function rates(){
         return $this->hasMany('App\Rate','user_id','id');
     }

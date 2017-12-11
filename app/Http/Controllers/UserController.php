@@ -19,7 +19,8 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $http = new Client;
-        $response = $http->post(url('/auth/token'), [
+        $url = app()->environment() == "local" ? "{$request->getHost()}:8001/auth/token" : url('/auth/token');
+        $response = $http->post($url, [
             'form_params' => [
                 'grant_type' => 'password',
                 'client_id' => 2,

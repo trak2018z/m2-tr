@@ -18,10 +18,10 @@ Route::get('/401','ApiController@unauthorized')->name('login');
 Route::group(['prefix' => '/user'], function(){
     Route::post('/auth','UserController@login');
     Route::post('/register','UserController@create');
-    Route::post('/{newUser}','UserController@activate')->name('activation');
+    Route::post('/activate/{newUser}','UserController@activate')->name('activation');
 });
 
-Route::group(['middleware' => ['auth:api']], function() {
+Route::group(['middleware' => ['auth:api', 'user_active']], function() {
 
     Route::group(['middleware' => 'roles', 'roles' => ['ROLE_ADMIN']], function(){
 
