@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -23,9 +24,17 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
+        $this->bindModels();
         parent::boot();
+    }
+
+    private function bindModels()
+    {
+        Route::bind('newUser', function ($value) {
+            return User::where('hash', '=', $value)
+                ->where('active','=',0)
+                ->first();
+        });
     }
 
     /**
