@@ -15,6 +15,37 @@ class GoogleMapsPlacesAPI
 {
 
     /**
+     * No errors occurred, the address was successfully parsed and at least one
+     * geocode was returned.
+     */
+    const STATUS_SUCCESS = "OK";
+
+    /**
+     * Geocode was successful, but returned no results.
+     */
+    const STATUS_NO_RESULTS = "ZERO_RESULTS";
+
+    /**
+     * Over limit of 2,500 (100,000 if premier) requests per day.
+     */
+    const STATUS_OVER_LIMIT = "OVER_QUERY_LIMIT";
+
+    /**
+     * Request denied, usually because of missing key parameter.
+     */
+    const STATUS_REQUEST_DENIED = "REQUEST_DENIED";
+
+    /**
+     * Invalid request, usually because of missing parameter that's required.
+     */
+    const STATUS_INVALID_REQUEST = "INVALID_REQUEST";
+
+    /**
+     * Unnown server error. May succeed if tried again.
+     */
+    const STATUS_UNKNOWN_ERROR = "UNKNOWN_ERROR";
+
+    /**
      * Domain portion of the Google Place API URL.
      */
     const URL_DOMAIN = "maps.googleapis.com";
