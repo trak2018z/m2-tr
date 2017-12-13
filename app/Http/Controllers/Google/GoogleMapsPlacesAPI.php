@@ -146,12 +146,19 @@ class GoogleMapsPlacesAPI
      */
     private $type;
 
+    /**
+     * Query for places nearby.
+     *
+     * @var string
+     */
+    private $query;
+
 
     /**
      * GoogleMapsPlacesAPI constructor.
      * @param string $apiKey
      */
-    public function __construct(string $apiKey, $format = self::FORMAT_JSON)
+    public function __construct(string $apiKey = null, $format = self::FORMAT_JSON)
     {
         $this->setApiKey($apiKey)
         ->setFormat($format);
@@ -383,12 +390,12 @@ class GoogleMapsPlacesAPI
     }
 
     /**
-     * Set the type for requested places
-     *
-     * @Link https://developers.google.com/places/web-service/supported_types
-     * @param $type place type
-     * @return GoogleMapsPlacesAPI
-     */
+ * Set the type for requested places
+ *
+ * @Link https://developers.google.com/places/web-service/supported_types
+ * @param $type place type
+ * @return GoogleMapsPlacesAPI
+ */
     public function setType($type){
         $this->type = $type;
 
@@ -403,6 +410,29 @@ class GoogleMapsPlacesAPI
      */
     public function getType() {
         return $this->type;
+    }
+
+    /**
+     * Set the query for places nearby
+     *
+     * @Link https://developers.google.com/places/web-service/search#TextSearchRequests
+     * @param $query query
+     * @return GoogleMapsPlacesAPI
+     */
+    public function setQuery($query){
+        $this->query = $query;
+
+        return $this;
+    }
+
+    /**
+     * Get the query
+     *
+     * @link   https://developers.google.com/places/web-service/search#TextSearchRequests
+     * @return string query
+     */
+    public function getQuery() {
+        return $this->query;
     }
 
     /**
@@ -460,9 +490,16 @@ class GoogleMapsPlacesAPI
         $queryString = array();
 
         // One of the following is required.
+        $location = $this->getLatitudeLongitude();
+        $query = $this->getQuery();
 
-        $queryString['location'] =  $this->getLatitudeLongitude();
+        if($location){
+            $queryString['location'] =  $location;
+        } elseif($query) {
+            $queryString['query'] =  $query;
+        }
 
+        $queryString['radius'] =  $this->getRadius();
         // Optional parameters.
         $queryString['language'] = $this->getLanguage();
         $queryString['type'] = $this->getType();
@@ -503,7 +540,7 @@ class GoogleMapsPlacesAPI
             $scheme = "http";
         }
 
-        $pathQueryString = self::URL_PATH . 'nearbysearch/' . $this->getFormat() . "?" . $this->geocodeQueryString();
+        $pathQueryString = self::URL_PATH . 'nearbysearch/' . $this->getFormat() . "?" . $this->searchQueryString();
 
         if ($this->isBusinessClient()) {
             $pathQueryString .= "&signature=" . $this->generateSignature($pathQueryString);
