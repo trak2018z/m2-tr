@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Http\Controllers\Google\GooglePlacesController;
+use App\Http\Controllers\Google\GoogleMapsController;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -10,7 +10,7 @@ class GoogleServiceTest extends TestCase
 {
 
     /**
-     * @var GooglePlacesController
+     * @var GoogleMapsController
      */
     private $api;
 
@@ -21,7 +21,7 @@ class GoogleServiceTest extends TestCase
      */
     public function setUp()
     {
-        $this->api = new GooglePlacesController();
+        $this->api = new GoogleMapsController();
     }
 
 

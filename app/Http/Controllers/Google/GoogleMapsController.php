@@ -9,7 +9,7 @@
 namespace App\Http\Controllers\Google;
 
 
-class GooglePlacesController
+class GoogleMapsController
 {
 
     /**
@@ -20,7 +20,7 @@ class GooglePlacesController
     private $service;
 
     /**
-     * GooglePlacesController constructor.
+     * GoogleMapsController constructor.
      */
     function __construct()
     {
