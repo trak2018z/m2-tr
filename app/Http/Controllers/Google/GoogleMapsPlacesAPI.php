@@ -482,7 +482,7 @@ class GoogleMapsPlacesAPI
 
     /**
      * Build the query string with all set parameters of the geocode request.
-     * TODO
+     *
      * @link   https://developers.google.com/places/web-service/search#PlaceSearchRequests
      * @return string encoded query string of the geocode request
      */
@@ -525,13 +525,13 @@ class GoogleMapsPlacesAPI
     }
 
     /**
-     * Build the URL (with query string) of the geocode request.
+     * Build the URL (with query string) of the nearby search request.
      *
      * @link   https://developers.google.com/places/web-service/search#PlaceSearchRequests
      * @param  bool $https whether to make the request over HTTPS
      * @return string URL of the geocode request
      */
-    private function searchUrl($https = false) {
+    private function searchUrl($https = false, $type = 'nearbysearch') {
         // HTTPS is required if an API key is set.
         if ($https || $this->getApiKey()) {
             $scheme = "https";
@@ -540,7 +540,7 @@ class GoogleMapsPlacesAPI
             $scheme = "http";
         }
 
-        $pathQueryString = self::URL_PATH . 'nearbysearch/' . $this->getFormat() . "?" . $this->searchQueryString();
+        $pathQueryString = self::URL_PATH . $type .'/' . $this->getFormat() . "?" . $this->searchQueryString();
 
         if ($this->isBusinessClient()) {
             $pathQueryString .= "&signature=" . $this->generateSignature($pathQueryString);
@@ -549,18 +549,42 @@ class GoogleMapsPlacesAPI
         return $scheme . "://" . self::URL_DOMAIN . $pathQueryString;
     }
 
+
     /**
-     * Execute the geocoding request. The return type is based on the requested
-     * format: associative array if JSON, SimpleXMLElement object if XML.
+     * Execute search nearby request
      *
-     * @link   https://developers.google.com/maps/documentation/geocoding/intro#GeocodingResponses
-     * @param  bool $https whether to make the request over HTTPS
-     * @param  bool $raw whether to return the raw (string) response
-     * @param  resource $context stream context from `stream_context_create()`
-     * @return string|array|SimpleXMLElement response in requested format
+     * @param bool $https
+     * @param bool $raw
+     * @param null $context
+     * @return bool|mixed|SimpleXMLElement|string
      */
-    public function search($https = false, $raw = false, $context = null) {
-        $response = file_get_contents($this->searchUrl($https), false, $context);
+    public function searchNearby($https = true, $raw = false, $context = null) {
+        return $this->request($this->searchUrl($https, 'nearbysearch'), $raw, $context);
+    }
+
+    /**
+     * Execute text search request
+     *
+     * @param bool $https
+     * @param bool $raw
+     * @param null $context
+     * @return bool|mixed|SimpleXMLElement|string
+     */
+    public function searchText($https = true, $raw = false, $context = null) {
+        return $this->request($this->searchUrl($https, 'textsearch'), $raw, $context);
+    }
+
+
+    /**
+     * Execute request
+     *
+     * @param $url
+     * @param bool $raw
+     * @param null $context
+     * @return bool|mixed|SimpleXMLElement|string
+     */
+    public function request($url, $raw = false, $context = null){
+        $response = file_get_contents($url, false, $context);
 
         if ($raw) {
             return $response;

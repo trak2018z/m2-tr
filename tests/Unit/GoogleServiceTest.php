@@ -43,6 +43,18 @@ class GoogleServiceTest extends TestCase
         $this->displayResult();
     }
 
+    public function testPlacesCoordinates(){
+        $this->result = $this->api->placeSearch(50.01623, 22.67776);
+        $this->assertTrue($this->result->success);
+        $this->displayResult();
+    }
+
+    public function testPlacesQuery(){
+        $this->result = $this->api->placeSearchQuery("Rzeszów");
+        $this->assertTrue($this->result->success);
+        $this->displayResult();
+    }
+
     private function displayResult($additional = null)
     {
         if (!is_null($additional)) {
