@@ -18,7 +18,7 @@ class IsUserActive
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
-        if(!is_null($user) && (!$user->active || is_null($user->active))){
+        if(!is_null($user) && (!$user->active || !is_null($user->hash))){
             if($request->expectsJson()){
                 return response()->json([
                     "success" => false,
