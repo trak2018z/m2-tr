@@ -14,7 +14,8 @@
         "jstayton/google-maps-geocoder": "^2.4",
         "laravel/framework": "5.5.*",
         "laravel/passport": "^4.0",
-        "laravel/tinker": "~1.0"
+        "laravel/tinker": "~1.0",
+        "propaganistas/laravel-phone": "^3.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
@@ -52,6 +53,12 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover"
+        ],
+        "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "php artisan ide-helper:generate",
+            "php artisan ide-helper:meta",
+            "php artisan optimize"
         ]
     },
     "config": {

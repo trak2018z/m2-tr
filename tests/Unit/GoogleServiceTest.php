@@ -33,7 +33,7 @@ class GoogleServiceTest extends TestCase
      */
     public function testGeocodeCoordinates()
     {
-        $this->result = $this->api->geocodeCoordinates(50.01623, 22.67776);
+        $this->result = $this->api->geocodeCoordinates(50.01623, 22.67776, \GoogleMapsGeocoder::TYPE_COUNTRY);
         $this->assertTrue($this->result->success);
         $this->displayResult();
     }

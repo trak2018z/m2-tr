@@ -76,9 +76,12 @@ class GoogleMapsController
         }
     }
 
-    public function geocodeCoordinates($latitude, $longitude){
+    public function geocodeCoordinates($latitude, $longitude, $type = null){
         $this->geocode->setLatitude($latitude);
         $this->geocode->setLongitude($longitude);
+        if(!is_null($type)){
+            $this->geocode->setResultType($type);
+        }
         return $this->doGeocodeRequest();
     }
 
