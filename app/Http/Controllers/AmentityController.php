@@ -15,7 +15,7 @@ class AmentityController extends Controller
     public function index()
     {
         return response()->json([
-            "success" => false,
+            "success" => true,
             "response" => [
                 "amentities" => Amentity::join('amentity_types','amentity_types.id','=','amentities.amentity_type_id')
                     ->orderBy('amentity_types.id','asc')

@@ -15,7 +15,7 @@ class PlaceTypeController extends Controller
     public function index()
     {
         return response()->json([
-            "success" => false,
+            "success" => true,
             "response" => [
                 "place_types" => PlaceType::orderBy('name','asc')->get()
             ]
