@@ -21,5 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AnnouncementType extends Model
 {
-    protected $fillable = ['name','token'];
+    protected $fillable = ['name', 'token'];
+
+    protected $visible = ['id', 'name', 'token'];
 }

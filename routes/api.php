@@ -29,6 +29,10 @@ Route::group(['prefix' => '/amentity'], function(){
     Route::get('/','AmentityController@index');
 });
 
+Route::group(['prefix' => '/announcement_type'], function(){
+    Route::get('/','AnnouncementTypeController@index');
+});
+
 Route::group(['middleware' => ['auth:api', 'user_active']], function() {
 
     Route::group(['middleware' => 'roles', 'roles' => ['ROLE_ADMIN']], function(){
