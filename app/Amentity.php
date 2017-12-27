@@ -27,6 +27,15 @@ class Amentity extends Model
 {
     protected $fillable = ['name','token', 'amentity_type_id'];
 
+    /**
+     * The attributes that should be visible for arrays.
+     *
+     * @var array
+     */
+    protected $visible = [
+        'id', 'name','token'
+    ];
+
     public function amentityType(){
         return $this->belongsTo('App\AmentityType','amentity_type_id','id');
     }
