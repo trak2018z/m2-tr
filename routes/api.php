@@ -21,6 +21,10 @@ Route::group(['prefix' => '/user'], function(){
     Route::post('/activate/{newUser}','UserController@activate')->name('activation');
 });
 
+Route::group(['prefix' => '/place_type'], function(){
+    Route::get('/','PlaceTypeController@index');
+});
+
 Route::group(['middleware' => ['auth:api', 'user_active']], function() {
 
     Route::group(['middleware' => 'roles', 'roles' => ['ROLE_ADMIN']], function(){

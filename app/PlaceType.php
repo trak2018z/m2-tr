@@ -24,6 +24,15 @@ class PlaceType extends Model
 {
     protected $fillable = ['name','token'];
 
+    /**
+     * The attributes that should be visible for arrays.
+     *
+     * @var array
+     */
+    protected $visible = [
+        'id', 'name','token'
+    ];
+
     public function places(){
         return $this->hasMany('App\Place','place_type_id','id');
     }
