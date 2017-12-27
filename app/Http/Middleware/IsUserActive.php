@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Log;
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class IsUserActive
 {
@@ -15,7 +17,7 @@ class IsUserActive
      */
     public function handle($request, Closure $next)
     {
-        $user = \Auth::user();
+        $user = Auth::user();
         if(!is_null($user) && (!$user->active || !is_null($user->active))){
             if($request->expectsJson()){
                 return response()->json([
