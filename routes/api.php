@@ -17,7 +17,7 @@ Route::get('/401','ApiController@unauthorized')->name('login');
 
 Route::group(['prefix' => '/user'], function(){
     Route::post('/auth','UserController@login');
-    Route::post('/register','UserController@create');
+    Route::put('/register','UserController@create');
     Route::post('/activate/{newUser}','UserController@activate')->name('activation');
 });
 
