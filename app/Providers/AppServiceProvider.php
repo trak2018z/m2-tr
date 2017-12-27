@@ -40,14 +40,14 @@ class AppServiceProvider extends ServiceProvider
 
     private function customizeValidator()
     {
-        Validator::extend('longitude', function($attribute, $value, $parameters, $validator){
-            if(isset($validator->getData()[$parameters[0]])){
+        Validator::extend('longitude', function ($attribute, $value, $parameters, $validator) {
+            if (isset($validator->getData()[$parameters[0]])) {
                 $lat = $validator->getData()[$parameters[0]];
             }
-            if(is_null($value) || !isset($lat) || is_null($lat)){
+            if (is_null($value) || !isset($lat) || is_null($lat)) {
                 return false;
             }
-            $result = (new GoogleMapsController())->geocodeCoordinates($lat,$value, \GoogleMapsGeocoder::TYPE_COUNTRY);
+            $result = (new GoogleMapsController())->geocodeCoordinates($lat, $value, \GoogleMapsGeocoder::TYPE_COUNTRY);
             return $result->success && $result->response->result->results[0]->address_components[0]->short_name == "PL";
         });
     }

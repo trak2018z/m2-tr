@@ -44,7 +44,10 @@ class AnnouncementController extends Controller
                 "dimension" => "required",
                 "phone" => "required|phone:AUTO,PL",
                 "announcement_type_id" => "required|exists:annoucement_type,id",
-                "amentity_ids" => "present|array"
+                "amentity_ids" => "present|array",
+                "amentity_ids.*" => "exists:amentities,id",
+                "images" => "present|array",
+                "images.*" => "image|mimes:jpeg,bmp,png|max:2048",
             ]);
 
         } catch(ValidationException $e){

@@ -39,7 +39,7 @@ return [
     'dimensions'           => 'Pole has invalid image dimensions.',
     'distinct'             => 'Pole field has a duplicate value.',
     'email'                => 'Pole must be a valid email address.',
-    'exists'               => 'The selected :attribute is invalid.',
+    'exists'               => 'Pole zawiera niepoprawną wartość.',
     'file'                 => 'Pole must be a file.',
     'filled'               => 'Pole field must have a value.',
     'longitude'            => 'Wybrane miejsce leży poza dozwolonym obszarem',
