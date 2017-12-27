@@ -21,27 +21,27 @@ class PlaceTypeSeeder extends Seeder
 
         PlaceType::create([
             'name' => 'Uczelnie',
-            'token' => 'PLACE_TYPE_UNIVERSITIES',
+            'token' => 'TYPE_UNIVERSITY',
         ]);
 
         PlaceType::create([
             'name' => 'Kluby',
-            'token' => 'PLACE_TYPE_CLUBS',
+            'token' => 'TYPE_NIGHT_CLUB',
         ]);
 
         PlaceType::create([
-            'name' => 'Przystanki',
-            'token' => 'PLACE_TYPE_BUS_STOPS',
+            'name' => 'Stacje',
+            'token' => 'TYPE_TRAIN_STATION',
         ]);
 
         PlaceType::create([
             'name' => 'Sklepy',
-            'token' => 'PLACE_TYPE_MARKETS',
+            'token' => 'TYPE_STORE',
         ]);
 
         PlaceType::create([
             'name' => 'Restauracje',
-            'token' => 'PLACE_TYPE_RESTAURANTS',
+            'token' => 'TYPE_RESTAURANT',
         ]);
     }
 }

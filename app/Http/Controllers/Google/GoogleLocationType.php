@@ -77,6 +77,7 @@ class GoogleLocationType
     const TYPE_POLICE = 'police';
     const TYPE_POST_OFFICE = 'post_office';
     const TYPE_REAL_ESTATE_AGENCY = 'real_estate_agency';
+    const TYPE_RESTAURANT = 'restaurant';
     const TYPE_ROOFING_CONTRACTOR = 'roofing_contractor';
     const TYPE_RV_PARK = 'rv_park';
     const TYPE_SCHOOL = 'school';
@@ -86,6 +87,7 @@ class GoogleLocationType
     const TYPE_STORAGE = 'storage';
     const TYPE_STORE = 'store';
     const TYPE_SUBWAY_STATION = 'subway_station';
+    const TYPE_SUPERMARKET = 'supermarket';
     const TYPE_SYNAGOGUE = 'synagogue';
     const TYPE_TAXI_STAND = 'taxi_stand';
     const TYPE_TRAIN_STATION = 'train_station';

@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Http\Controllers\Google\GoogleLocationType;
 use App\Http\Controllers\Google\GoogleMapsController;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -44,7 +45,7 @@ class GoogleServiceTest extends TestCase
     }
 
     public function testPlacesCoordinates(){
-        $this->result = $this->api->placeSearch(50.01623, 22.67776);
+        $this->result = $this->api->placeSearch(50.01623, 22.67776, GoogleLocationType::TYPE_SUPERMARKET, 1500);
         $this->assertTrue($this->result->success);
         $this->displayResult();
     }
