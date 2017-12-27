@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Announcement;
 use App\Http\Controllers\Google\GoogleMapsController;
 use App\Log;
+use App\Observers\AnnouncementObserver;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Schema;
@@ -31,6 +33,8 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment() !== 'production') {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
+
+        Announcement::observe(AnnouncementObserver::class);
     }
 
     private function customizeSchema()

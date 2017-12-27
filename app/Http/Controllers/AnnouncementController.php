@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Log;
+use DB;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -37,16 +40,18 @@ class AnnouncementController extends Controller
     {
         try{
             $this->validate($request, [
+                "title" => "required|min:10|max:120",
                 "description" => "required|min:10|max:10000",
                 "latitude" => "required",
                 "longitude" => "required|longitude:latitude",
                 "max_persons" => "required|integer|min:1",
-                "dimension" => "required",
+                "dimension" => "required|integer|min:1",
                 "phone" => "required|phone:AUTO,PL",
+                "email" => "required|email",
                 "announcement_type_id" => "required|exists:annoucement_type,id",
                 "amentity_ids" => "present|array",
                 "amentity_ids.*" => "exists:amentities,id",
-                "images" => "present|array",
+                "images" => "present",
                 "images.*" => "image|mimes:jpeg,bmp,png|max:2048",
             ]);
 
@@ -58,6 +63,38 @@ class AnnouncementController extends Controller
                     "message" => "ERROR_VALIDATION"
                 ]
             ], 400);
+        }
+
+        try{
+            DB::transaction(function() use ($request) {
+                // Create Announcement
+                $announcement = Announcement::create([
+                    'title' => $request->title,
+                    'description' => $request->description,
+                    'latitude' => $request->latitude,
+                    'longitude' => $request->longitude,
+                    'address_short' => "",
+                    'address' => "",
+                    'max_persons' => $request->max_persons,
+                    'dimension' => $request->dimension,
+                    'phone' => $request->dimension,
+                    'email' => $request->email,
+                    'user' => Auth::id(),
+                    'announcement_type_id' => $request->announcement_type_id,
+                ]);
+                // Handle images
+
+                // Handle amentities
+            });
+        } catch(Exception $e){
+            Log::logError($e->getMessage(). " in ". $e->getFile(), $e->getCode(), $e->getLine());
+
+            return response()->json([
+                "success" => false,
+                "response" => [
+                    "message" => "ERROR_OCCURED"
+                ]
+            ], 500);
         }
     }
 
