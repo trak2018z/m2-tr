@@ -98,7 +98,7 @@ class Announcement extends Model
     }
 
     public function setNiceURL(){
-        $this->nice_url = preg_replace('/(-)+/','-',$this->clean($this->title) . "-" . $this->atributes["id"].'-'.rand(10000,99999));
+        $this->nice_url = preg_replace('/(-)+/','-',$this->clean($this->title) . "-" . $this->id.'-'.rand(10000,99999));
         return $this->save();
     }
 
