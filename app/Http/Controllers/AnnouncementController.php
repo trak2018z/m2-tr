@@ -55,7 +55,7 @@ class AnnouncementController extends Controller
                 "max_persons" => "required|integer|min:1",
                 "dimension" => "required|integer|min:1",
                 "phone" => "required|phone:AUTO,PL",
-                "email" => "required|email",
+                "email" => "nullable|email",
                 "main_image" => "required|min:0|max:{$max_main_image}",
                 "announcement_type_id" => "required|exists:announcement_types,id",
                 "amentity_ids" => "present|array",
