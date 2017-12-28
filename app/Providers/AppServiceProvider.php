@@ -51,8 +51,8 @@ class AppServiceProvider extends ServiceProvider
             if (is_null($value) || !isset($lat) || is_null($lat)) {
                 return false;
             }
-            $result = (new GoogleMapsController())->geocodeCoordinates($lat, $value, \GoogleMapsGeocoder::TYPE_COUNTRY);
-            return $result->success && $result->response->result->results[0]->address_components[0]->short_name == "PL";
+            $result = (new GoogleMapsController())->geocodeCoordinates($lat, $value, \GoogleMapsGeocoder::TYPE_STREET_ADDRESS);
+            return $result->success && $result->response->result->status != \GoogleMapsGeocoder::STATUS_NO_RESULTS && $result->response->result->results[0]->address_components[0]->short_name == "PL";
         });
     }
 

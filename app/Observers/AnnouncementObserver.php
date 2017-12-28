@@ -10,6 +10,7 @@ namespace App\Observers;
 
 
 use App\Announcement;
+use App\Jobs\GetAnnouncementAddress;
 
 class AnnouncementObserver
 {
@@ -21,6 +22,7 @@ class AnnouncementObserver
      */
     public function created(Announcement $announcement)
     {
-        // TODO
+        dispatch(new GetAnnouncementAddress($announcement));
+        $announcement->setNiceURL();
     }
 }

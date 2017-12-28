@@ -5,6 +5,62 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Announcement
+ *
+ * @property int $id
+ * @property string $title
+ * @property string $nice_url
+ * @property string $description
+ * @property float $latitude
+ * @property float $longitude
+ * @property string $address_short Short address e.g. only street name
+ * @property string $address
+ * @property int|null $max_persons maximum number of persons in flat
+ * @property float $dimension dimensions in square meters of whole flat/house/room
+ * @property string $phone
+ * @property string $email
+ * @property string|null $accepted_at
+ * @property string|null $featured_till
+ * @property int $announcement_type_id
+ * @property int $user
+ * @property string|null $deleted_at
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property int $active
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Amentity[] $amentities
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\AnnouncementImage[] $announcementImages
+ * @property-read \App\AnnouncementType $announcementType
+ * @property-read \App\User $author
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Place[] $places
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Rate[] $rates
+ * @method static bool|null forceDelete()
+ * @method static \Illuminate\Database\Query\Builder|\App\Announcement onlyTrashed()
+ * @method static bool|null restore()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereAcceptedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereAddressShort($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereAnnouncementTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereDimension($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereFeaturedTill($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereLatitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereLongitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereMaxPersons($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereNiceUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement wherePhone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Announcement whereUser($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Announcement withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|\App\Announcement withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Announcement extends Model
 {
     use SoftDeletes;
@@ -14,15 +70,14 @@ class Announcement extends Model
     public function setTitleAttribute($value)
     {
         $this->attributes["title"] = $value;
-        $this->attributes["nice_url"] = $this->clean($value) . "-" . $this->attributes["id"].'-'.rand(10000,99999);
     }
 
     public function rates(){
         return $this->hasMany('App\Rate','announcement_id','id');
     }
 
-    public function user(){
-        return $this->belongsTo('App\User','user','id');
+    public function author(){
+        return $this->belongsTo('App\User','usermo','id');
     }
 
     public function announcementType(){
@@ -39,6 +94,11 @@ class Announcement extends Model
 
     public function places(){
         return $this->belongsToMany('App\Place','place_in_hoods','place_id','announcement_id','id','id')->using('App\PlaceInHood');
+    }
+
+    public function setNiceURL(){
+        $this->nice_url = $this->clean($this->title) . "-" . $this->id.'-'.rand(10000,99999);
+        return $this->save();
     }
 
     private function clean($string)

@@ -35,6 +35,7 @@ Route::group(['prefix' => '/announcement_type'], function(){
 
 Route::group(['prefix' => '/announcement'], function(){
     Route::post('/','AnnouncementController@store');
+    Route::put('/','AnnouncementController@store');
 });
 
 Route::group(['middleware' => ['auth:api', 'user_active']], function() {
