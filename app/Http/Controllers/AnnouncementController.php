@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Announcement;
+use App\AnnouncementImage;
 use App\Log;
 use DB;
 use Exception;
+use File;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\ValidationException;
+use Intervention\Image\Facades\Image;
+use Throwable;
 
 class AnnouncementController extends Controller
 {
@@ -66,7 +72,10 @@ class AnnouncementController extends Controller
         }
 
         try{
-            DB::transaction(function() use ($request) {
+            DB::transaction(/**
+             * @throws Exception
+             */
+                function() use ($request) {
                 // Create Announcement
                 $announcement = Announcement::create([
                     'title' => $request->title,
@@ -82,11 +91,43 @@ class AnnouncementController extends Controller
                     'user' => Auth::id(),
                     'announcement_type_id' => $request->announcement_type_id,
                 ]);
-                // Handle images
-
+                
                 // Handle amentities
+                $announcement->amentities()->attach($request->amentity_ids);
+
+                // Handle images
+                if (count($request->file("images"))) {
+                    foreach ($request->file("images") as $idx => $image) {
+                        /**
+                         * @var $image UploadedFile
+                         */
+                        if (!$image->isValid()) {
+                            throw new Exception("Plik/i został przesłany niepoprawnie.");
+                        }
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filename = time() . '_' . rand(1, 10000) . '.' . $extension;
+                        $img = Image::make($image->getRealPath());
+
+                        $thumbPath = "/images/announcements/thumbs/" . $filename;
+                        $img->fit(445)->save(public_path() . $thumbPath, 75);
+
+                        $img = Image::make($image->getRealPath());
+                        $imagePath = "/images/announcements/images/" . $filename;
+                        $img = $img->fit(1920);
+                        $img->save(public_path() . $imagePath, 85);
+
+                        AnnouncementImage::create([
+                            'path' => $imagePath,
+                            'thumb_path' => $thumbPath,
+                            'title' => '',
+                            'mime' => $img->mime(),
+                            'extension' => $extension
+                        ]);
+                    }
+                }
             });
-        } catch(Exception $e){
+        } catch(Exception|Throwable $e){
             Log::logError($e->getMessage(). " in ". $e->getFile(), $e->getCode(), $e->getLine());
 
             return response()->json([
