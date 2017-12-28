@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Announcement;
 use App\AnnouncementImage;
 use App\Log;
+use Auth;
 use DB;
 use Exception;
 use File;
@@ -45,6 +46,7 @@ class AnnouncementController extends Controller
     public function store(Request $request)
     {
         try{
+            $max_main_image = count($request->images);
             $this->validate($request, [
                 "title" => "required|min:10|max:120",
                 "description" => "required|min:10|max:10000",
@@ -54,10 +56,11 @@ class AnnouncementController extends Controller
                 "dimension" => "required|integer|min:1",
                 "phone" => "required|phone:AUTO,PL",
                 "email" => "required|email",
-                "announcement_type_id" => "required|exists:annoucement_type,id",
+                "main_image" => "required|min:0|max:{$max_main_image}",
+                "announcement_type_id" => "required|exists:announcement_types,id",
                 "amentity_ids" => "present|array",
                 "amentity_ids.*" => "exists:amentities,id",
-                "images" => "present",
+                "images" => "present|array|min:1",
                 "images.*" => "image|mimes:jpeg,bmp,png|max:2048",
             ]);
 
@@ -77,6 +80,7 @@ class AnnouncementController extends Controller
              */
                 function() use ($request) {
                 // Create Announcement
+                $user = Auth::user();
                 $announcement = Announcement::create([
                     'title' => $request->title,
                     'description' => $request->description,
@@ -86,25 +90,24 @@ class AnnouncementController extends Controller
                     'address' => "",
                     'max_persons' => $request->max_persons,
                     'dimension' => $request->dimension,
-                    'phone' => $request->dimension,
-                    'email' => $request->email,
-                    'user' => Auth::id(),
+                    'phone' => $request->phone ?? $user->phone,
+                    'email' => $request->email ?? $user->email,
+                    'user' => $user->id,
                     'announcement_type_id' => $request->announcement_type_id,
                 ]);
-                
+
                 // Handle amentities
                 $announcement->amentities()->attach($request->amentity_ids);
-
                 // Handle images
-                if (count($request->file("images"))) {
-                    foreach ($request->file("images") as $idx => $image) {
+                $main_image = 0;
+                if (count($request->images)) {
+                    foreach ($request->images as $idx => $image) {
                         /**
                          * @var $image UploadedFile
                          */
                         if (!$image->isValid()) {
                             throw new Exception("Plik/i został przesłany niepoprawnie.");
                         }
-
                         $extension = $image->getClientOriginalExtension();
                         $filename = time() . '_' . rand(1, 10000) . '.' . $extension;
                         $img = Image::make($image->getRealPath());
@@ -122,13 +125,24 @@ class AnnouncementController extends Controller
                             'thumb_path' => $thumbPath,
                             'title' => '',
                             'mime' => $img->mime(),
-                            'extension' => $extension
+                            'extension' => $extension,
+                            'main' => $main_image == $request->main_image,
+                            'announcement_id' => $announcement->id,
                         ]);
+
+                        $main_image++;
                     }
                 }
             });
+
+            return response()->json([
+                "success" => true,
+                "response" => [
+                    "message" => "ANNOUNCEMENT_CREATED"
+                ]
+            ], 201);
         } catch(Exception|Throwable $e){
-            Log::logError($e->getMessage(). " in ". $e->getFile(), $e->getCode(), $e->getLine());
+            Log::logError($e->getMessage(). " in ". $e->getFile(), intval($e->getCode()), $e->getLine());
 
             return response()->json([
                 "success" => false,

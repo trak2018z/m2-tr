@@ -18,8 +18,8 @@ class CreateAnnouncementsTable extends Migration
             $table->string('title');
             $table->string('nice_url')->unique();
             $table->text('description');
-            $table->float('latitude')->index();
-            $table->float('longitude')->index();
+            $table->double('latitude',16,14)->index();
+            $table->double('longitude', 16,14)->index();
             $table->string('address_short')->comment('Short address e.g. only street name');
             $table->string('address');
             $table->tinyInteger('max_persons')->comment('maximum number of persons in flat')->nullable();

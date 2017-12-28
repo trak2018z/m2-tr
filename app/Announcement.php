@@ -70,6 +70,7 @@ class Announcement extends Model
     public function setTitleAttribute($value)
     {
         $this->attributes["title"] = $value;
+        $this->attributes["nice_url"] = $value.rand(10000,99999);
     }
 
     public function rates(){
@@ -77,7 +78,7 @@ class Announcement extends Model
     }
 
     public function author(){
-        return $this->belongsTo('App\User','usermo','id');
+        return $this->belongsTo('App\User','user','id');
     }
 
     public function announcementType(){
@@ -89,7 +90,7 @@ class Announcement extends Model
     }
 
     public function amentities(){
-        return $this->belongsToMany('App\Amentity','announcement_amentities', 'amentity_id','announcement_id','id', 'id')->using('App\AnnouncementAmentity');
+        return $this->belongsToMany('App\Amentity','announcement_amentities', 'announcement_id','amentity_id','id', 'id')->using('App\AnnouncementAmentity');
     }
 
     public function places(){
@@ -97,7 +98,7 @@ class Announcement extends Model
     }
 
     public function setNiceURL(){
-        $this->nice_url = $this->clean($this->title) . "-" . $this->id.'-'.rand(10000,99999);
+        $this->nice_url = preg_replace('/(-)+/','-',$this->clean($this->title) . "-" . $this->atributes["id"].'-'.rand(10000,99999));
         return $this->save();
     }
 
@@ -158,7 +159,7 @@ class Announcement extends Model
             '/[ÇĆ]/u' => 'c',
             '/śс/' => 's',
             '/ŚС/' => 's',
-            '/łłл/' => 'l',
+            '/łłłл/' => 'l',
             '/ŁŁЛ/' => 'l',
             '/[ñńн]/u' => 'n',
             '/[ÑŃН]/u' => 'n',

@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerObservers();
         $this->customizeSchema();
         $this->customizeValidator();
     }
@@ -33,7 +34,9 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment() !== 'production') {
             $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
         }
+    }
 
+    private function registerObservers(){
         Announcement::observe(AnnouncementObserver::class);
     }
 
@@ -52,7 +55,7 @@ class AppServiceProvider extends ServiceProvider
                 return false;
             }
             $result = (new GoogleMapsController())->geocodeCoordinates($lat, $value, \GoogleMapsGeocoder::TYPE_STREET_ADDRESS);
-            return $result->success && $result->response->result->status != \GoogleMapsGeocoder::STATUS_NO_RESULTS && $result->response->result->results[0]->address_components[0]->short_name == "PL";
+            return $result->success && $result->response->result->status != \GoogleMapsGeocoder::STATUS_NO_RESULTS && preg_match('/(\W)+Polska$/',$result->response->result->results[0]->formatted_address);
         });
     }
 

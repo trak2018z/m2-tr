@@ -33,11 +33,6 @@ Route::group(['prefix' => '/announcement_type'], function(){
     Route::get('/','AnnouncementTypeController@index');
 });
 
-Route::group(['prefix' => '/announcement'], function(){
-    Route::post('/','AnnouncementController@store');
-    Route::put('/','AnnouncementController@store');
-});
-
 Route::group(['middleware' => ['auth:api', 'user_active']], function() {
 
     Route::group(['middleware' => 'roles', 'roles' => ['ROLE_ADMIN']], function(){
@@ -46,6 +41,11 @@ Route::group(['middleware' => ['auth:api', 'user_active']], function() {
 
     Route::group(['prefix' => '/user'], function(){
         Route::get('/me','UserController@me');
+    });
+
+    Route::group(['prefix' => '/announcement'], function(){
+        Route::post('/','AnnouncementController@store');
+        Route::put('/','AnnouncementController@store');
     });
 
 });

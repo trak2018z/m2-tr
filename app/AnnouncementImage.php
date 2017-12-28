@@ -27,5 +27,5 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AnnouncementImage extends Model
 {
-    protected $fillable = ['path','thumb_path','title','mime','extension'];
+    protected $fillable = ['path','thumb_path','title','mime','extension', 'main', 'announcement_id'];
 }

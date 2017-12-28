@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAnnouncementAmentitiesTable extends Migration
+class AddAnnouncementIdToAnnouncementImage extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateAnnouncementAmentitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('announcement_amentities', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::table('announcement_images', function (Blueprint $table) {
             $table->integer('announcement_id')->unsigned();
             $table->foreign('announcement_id')->references('id')->on('announcements')->onDelete("CASCADE");
-            $table->integer('amentity_id')->unsigned();
-            $table->foreign('amentity_id')->references('id')->on('amentities')->onDelete("CASCADE");
-            $table->timestamps();
         });
     }
 
@@ -30,6 +26,9 @@ class CreateAnnouncementAmentitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('announcement_amentities');
+        Schema::table('announcement_images', function (Blueprint $table) {
+            $table->dropForeign(['announcement_id']);
+            $table->dropColumn('announcement_id');
+        });
     }
 }

@@ -38,7 +38,7 @@ class GetAnnouncementAddress implements ShouldQueue
      */
     public function handle()
     {
-        $result = (new GoogleMapsController())->geocodeCoordinates($this->announcement, $this->announcement, \GoogleMapsGeocoder::TYPE_STREET_ADDRESS);
+        $result = (new GoogleMapsController())->geocodeCoordinates($this->announcement->latitude, $this->announcement->longitude, \GoogleMapsGeocoder::TYPE_STREET_ADDRESS);
         if(!$result->success){
             $this->handleError(new Exception($result->response->message,$result->code), __LINE__);
         } else {
