@@ -9,7 +9,6 @@
 namespace App\Http\Controllers\Google;
 
 
-use App\Log;
 use SimpleXMLElement;
 
 class GoogleMapsPlacesAPI
@@ -587,14 +586,12 @@ class GoogleMapsPlacesAPI
      * @return bool|mixed|SimpleXMLElement|string
      */
     public function request($url, $raw = false, $context = null){
-        Log::logMessage($url);
         $response = file_get_contents($url, false, $context);
 
         if ($raw) {
             return $response;
         }
         elseif ($this->isFormatJson()) {
-            Log::logMessage($response);
             return json_decode($response, true);
         }
         elseif ($this->isFormatXml()) {
