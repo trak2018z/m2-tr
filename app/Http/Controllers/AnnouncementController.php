@@ -22,10 +22,47 @@ class AnnouncementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $page = $this->readParameter($request, 'page', 0);
+        $limit = $this->readParameter($request, 'limit', 20);
+
+        $announcements = Announcement::leftJoin('announcement_images','announcement_images.announcement_id','=','announcements.id')
+            ->select([
+                'announcements.id as id',
+                'announcements.title as title',
+                'announcements.nice_url as url',
+                'announcements.description as description',
+                'announcements.address_short as address',
+                'announcements.max_persons as max_persons',
+                'announcements.dimension as dimension',
+                DB::raw("CONCAT('".env('APP_URL')."',announcement_images.thumb_path) as image")
+            ])
+            ->where(function($query){
+                $query->whereNull('announcement_images.main')
+                    ->orWhere('announcement_images.main','=',true);
+            })
+            ->get();
+
+        $total = count($announcements);
+
+        $announcements = $announcements->slice($page*$limit, $limit);
+
+        return response()->json([
+            "success" => true,
+            "response" => [
+                "announcements" => $announcements,
+                "count" => count($announcements),
+                "offset" => $page*$limit + $limit > $total ? $total : $page*$limit + $limit,
+                "total" => $total,
+            ]
+        ]);
     }
+
+    private function readParameter(Request $request, $name, $default = null){
+        return is_null($request->{$name}) ? $default : $request->{$name};
+    }
+
 
     /**
      * Show the form for creating a new resource.

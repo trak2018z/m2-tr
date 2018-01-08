@@ -33,6 +33,10 @@ Route::group(['prefix' => '/announcement_type'], function(){
     Route::get('/','AnnouncementTypeController@index');
 });
 
+Route::group(['prefix' => '/announcement'], function(){
+    Route::get('/','AnnouncementController@index');
+});
+
 Route::group(['middleware' => ['auth:api', 'user_active']], function() {
 
     Route::group(['middleware' => 'roles', 'roles' => ['ROLE_ADMIN']], function(){
