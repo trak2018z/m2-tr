@@ -214,13 +214,23 @@ class AnnouncementController extends Controller
     {
         $announcement->author;
         $announcement->places_nearby = Place::join('place_in_hoods','place_in_hoods.place_id','=','places.id')
+                                            ->join('place_types','place_types.id','=','places.place_type_id')
                                             ->where('place_in_hoods.announcement_id','=',$announcement->id)
                                             ->where('distance','<',1000)
                                             ->select([
                                                 'places.*',
-                                                'place_in_hoods.distance'
+                                                'place_in_hoods.distance',
+                                                'place_types.token as place_token',
+                                                'place_types.name as place_name'
                                             ])
-                                            ->get();
+                                            ->orderBy('place_token','asc')
+                                            ->orderBy('distance','asc')
+                                            ->get()
+                                            ->mapToGroups(function ($item, $key) {
+                                                $r = [$item['place_token'] => $item];
+                                                unset($item['place_token']);
+                                                return $r;
+                                            });
         $announcement->amentities;
         $announcement->announcementImages;
         return response()->json([

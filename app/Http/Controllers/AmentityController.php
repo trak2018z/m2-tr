@@ -26,7 +26,9 @@ class AmentityController extends Controller
                         'amentity_types.token as amentity_type_token'
                     ])
                     ->get()->mapToGroups(function ($item, $key) {
-                        return [$item['amentity_type_token'] => $item];
+                        $r = [$item['amentity_type_token'] => $item];
+                        unset($item['amentity_type_token']);
+                        return $r;
                     })
             ]
         ], 200);
