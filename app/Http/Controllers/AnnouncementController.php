@@ -38,6 +38,7 @@ class AnnouncementController extends Controller
                 'announcements.dimension as dimension',
                 DB::raw("CONCAT('".env('APP_URL')."',announcement_images.thumb_path) as image")
             ])
+            ->where('announcements.active','=',2)
             ->where(function($query){
                 $query->whereNull('announcement_images.main')
                     ->orWhere('announcement_images.main','=',true);
