@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Announcement;
 use App\AnnouncementImage;
 use App\Log;
+use App\Place;
 use Auth;
 use DB;
 use Exception;
@@ -206,12 +207,28 @@ class AnnouncementController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Announcement $announcement
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Announcement $announcement)
     {
-        //
+        $announcement->author;
+        $announcement->places_nearby = Place::join('place_in_hoods','place_in_hoods.place_id','=','places.id')
+                                            ->where('place_in_hoods.announcement_id','=',$announcement->id)
+                                            ->where('distance','<',1000)
+                                            ->select([
+                                                'places.*',
+                                                'place_in_hoods.distance'
+                                            ])
+                                            ->get();
+        $announcement->amentities;
+        $announcement->announcementImages;
+        return response()->json([
+            "success" => true,
+            "response" => [
+                "announcement" => $announcement
+            ]
+        ]);
     }
 
     /**

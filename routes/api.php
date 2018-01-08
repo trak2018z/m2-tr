@@ -35,6 +35,7 @@ Route::group(['prefix' => '/announcement_type'], function(){
 
 Route::group(['prefix' => '/announcement'], function(){
     Route::get('/','AnnouncementController@index');
+    Route::get('/{announcement}','AnnouncementController@show');
 });
 
 Route::group(['middleware' => ['auth:api', 'user_active']], function() {

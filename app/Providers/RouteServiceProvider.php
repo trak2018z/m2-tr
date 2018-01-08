@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Announcement;
 use App\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -33,6 +34,12 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('newUser', function ($value) {
             return User::where('hash', '=', $value)
                 ->where('active','=',0)
+                ->first();
+        });
+
+        Route::bind('announcement', function ($value) {
+            return Announcement::where('nice_url', '=', $value)
+                ->where('active','=',2)
                 ->first();
         });
     }

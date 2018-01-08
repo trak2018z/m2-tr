@@ -66,6 +66,8 @@ class Announcement extends Model
 {
     use SoftDeletes;
 
+    protected $hidden = ['user', 'announcement_type_id'];
+
     protected $fillable = ['title','description','latitude','longitude','address_short','address','max_persons','dimension','phone','email','user','announcement_type_id'];
 
     public function setActive(){
@@ -99,8 +101,11 @@ class Announcement extends Model
         return $this->belongsToMany('App\Amentity','announcement_amentities', 'announcement_id','amentity_id','id', 'id')->using('App\AnnouncementAmentity');
     }
 
+    /**
+     * @return $this
+     */
     public function places(){
-        return $this->belongsToMany('App\Place','place_in_hoods','announcement_id','place_id','id','id')->using('App\PlaceInHood');
+        return $this->belongsToMany('App\Place','place_in_hoods','announcement_id','place_id','id','id')->using('App\PlaceInHood')->withPivot('distance');
     }
 
     public function setNiceURL(){
