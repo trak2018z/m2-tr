@@ -18,8 +18,8 @@ class CreatePlacesTable extends Migration
             $table->string('name');
             $table->string('address1');
             $table->string('address2')->nullable();
-            $table->float('latitude')->index();
-            $table->float('longitude')->index();
+            $table->float('latitude',16,14)->index();
+            $table->float('longitude',16,14)->index();
             $table->integer('place_type_id')->unsigned();
             $table->foreign('place_type_id')->references('id')->on('place_types');
             $table->timestamps();
