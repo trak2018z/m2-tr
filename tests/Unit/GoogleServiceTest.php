@@ -45,7 +45,13 @@ class GoogleServiceTest extends TestCase
     }
 
     public function testPlacesCoordinates(){
-        $this->result = $this->api->placeSearch(50.01623, 22.67776, GoogleLocationType::TYPE_SUPERMARKET, 1500);
+        $this->result = $this->api->placeSearch(50.01623, 22.67776, GoogleLocationType::TYPE_SUPERMARKET, 30000);
+        $this->assertTrue($this->result->success);
+        $this->displayResult();
+    }
+
+    public function testPlacesCoordinatesNext(){
+        $this->result = $this->api->placeSearchNext("CqQCEwEAAC7tE_366r0cgdjegDYv7IEx3cS_JeaqXkNaNxneO4Iw5aBbeCYWormOhuCTKSvPnpyIWCNTekHX32Fog7kaUHRJ8dyO_MjQt7MYxKo_7jJJW0t71GRpzN64VtaKzuijPs_woLTpwXF65T4-7vap9pjIdrfx_urcRHX5Zk50oFK1ZIwimoyaZHrVrO5EdIw-MptAOFGv2NSF-Jwyn05ZJZ2r0Us448pnUTKKy3tl8v7_kSKp7vBug74f0ZB-lLNSmcdLE4xZZzUzsFt8cdyV6gqx5oZP-2XYG572jHrU5rJdXcKgQ9DD21_kmAUJ9MvxlITJfSFb8Cyz56tqlCLnQUXTzgZVrcCLnDS4x1KrcZ35S93Qsd6THQDovWpaTbbbsxIQ6Brg1Z-h4rVLWtuyCGyAGhoUzMYtI8nbzBaDFjk5sYC9fLiuwJU");
         $this->assertTrue($this->result->success);
         $this->displayResult();
     }

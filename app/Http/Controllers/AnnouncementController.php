@@ -133,6 +133,9 @@ class AnnouncementController extends Controller
                         $main_image++;
                     }
                 }
+
+                // Set active by default in alpha version
+                $announcement->setActive();
             });
 
             return response()->json([

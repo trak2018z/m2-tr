@@ -9,6 +9,7 @@
 namespace App\Http\Controllers\Google;
 
 
+use App\Log;
 use SimpleXMLElement;
 
 class GoogleMapsPlacesAPI
@@ -501,12 +502,14 @@ class GoogleMapsPlacesAPI
 
         $queryString['radius'] =  $this->getRadius();
         // Optional parameters.
-        $queryString['language'] = $this->getLanguage();
+
         $queryString['type'] = $this->getType();
 
         $pagetoken = $this->getPagetoken();
         if($pagetoken){
             $queryString["pagetoken"] = $pagetoken;
+        } else {
+            $queryString['language'] = $this->getLanguage();
         }
 
         // Remove any unset parameters.
@@ -584,12 +587,14 @@ class GoogleMapsPlacesAPI
      * @return bool|mixed|SimpleXMLElement|string
      */
     public function request($url, $raw = false, $context = null){
+        Log::logMessage($url);
         $response = file_get_contents($url, false, $context);
 
         if ($raw) {
             return $response;
         }
         elseif ($this->isFormatJson()) {
+            Log::logMessage($response);
             return json_decode($response, true);
         }
         elseif ($this->isFormatXml()) {

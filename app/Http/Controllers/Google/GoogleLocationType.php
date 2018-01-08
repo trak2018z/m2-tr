@@ -96,4 +96,8 @@ class GoogleLocationType
     const TYPE_UNIVERSITY = 'university';
     const TYPE_VETERINARY_CARE = 'veterinary_care';
     const TYPE_ZOO = 'zoo';
+
+    public static function get($type){
+        return constant('self::'.$type);
+    }
 }

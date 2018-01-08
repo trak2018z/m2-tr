@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Jobs\GetPlacesNearby;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -67,6 +68,11 @@ class Announcement extends Model
 
     protected $fillable = ['title','description','latitude','longitude','address_short','address','max_persons','dimension','phone','email','user','announcement_type_id'];
 
+    public function setActive(){
+         // Get places nearby
+         dispatch(new GetPlacesNearby($this));
+    }
+
     public function setTitleAttribute($value)
     {
         $this->attributes["title"] = $value;
@@ -94,7 +100,7 @@ class Announcement extends Model
     }
 
     public function places(){
-        return $this->belongsToMany('App\Place','place_in_hoods','place_id','announcement_id','id','id')->using('App\PlaceInHood');
+        return $this->belongsToMany('App\Place','place_in_hoods','announcement_id','place_id','id','id')->using('App\PlaceInHood');
     }
 
     public function setNiceURL(){

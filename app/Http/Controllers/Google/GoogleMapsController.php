@@ -134,12 +134,22 @@ class GoogleMapsController
     }
 
     public function placeSearch($latitude, $longitude, $type = null, $radius = 50000){
-        $this->place->setLatitude($latitude)->setLongitude($longitude)->setRadius($radius)->setQuery(null)->setType($type);
+        $this->place->setLatitude($latitude)->setLongitude($longitude)->setRadius($radius)->setQuery(null)->setType($type)->setPagetoken(null);
+        return $this->wrapGooglePlaceApiResponse($this->place->searchNearby());
+    }
+
+    public function placeSearchNext($pageToken){
+        $this->place->setLatitude(null)->setLongitude(null)->setRadius(null)->setQuery(null)->setType(null)->setPagetoken($pageToken);
         return $this->wrapGooglePlaceApiResponse($this->place->searchNearby());
     }
 
     public function placeSearchQuery($query, $type = null, $radius = 50000){
-        $this->place->setLatitude(null)->setLongitude(null)->setRadius($radius)->setQuery($query)->setType($type);
+        $this->place->setLatitude(null)->setLongitude(null)->setRadius($radius)->setQuery($query)->setType($type)->setPagetoken(null);
+        return $this->wrapGooglePlaceApiResponse($this->place->searchText());
+    }
+
+    public function placeSearchQueryNext($pageToken){
+        $this->place->setLatitude(null)->setLongitude(null)->setRadius(null)->setQuery(null)->setType(null)->setPagetoken($pageToken);
         return $this->wrapGooglePlaceApiResponse($this->place->searchText());
     }
 
