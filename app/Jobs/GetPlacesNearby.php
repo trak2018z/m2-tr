@@ -80,7 +80,7 @@ class GetPlacesNearby implements ShouldQueue
                                     'google_id' => $p->place_id
                                 ]);
 
-                                $place_ids[] = $place->id;
+                                $place_ids[$place->id] = ["distance" => $this->vincentyGreatCircleDistance($this->announcement->latitude, $this->announcement->longitude,$p->geometry->location->lat,$p->geometry->location->lng)];
                             }
                         }
                         $next = isset($result->response->result->next_page_token) && !is_null($result->response->result->next_page_token);
@@ -111,6 +111,24 @@ class GetPlacesNearby implements ShouldQueue
             $this->handleError($e, __LINE__);
         }
 
+    }
+
+    public function vincentyGreatCircleDistance(
+        $latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
+    {
+        // convert from degrees to radians
+        $latFrom = deg2rad($latitudeFrom);
+        $lonFrom = deg2rad($longitudeFrom);
+        $latTo = deg2rad($latitudeTo);
+        $lonTo = deg2rad($longitudeTo);
+
+        $lonDelta = $lonTo - $lonFrom;
+        $a = pow(cos($latTo) * sin($lonDelta), 2) +
+            pow(cos($latFrom) * sin($latTo) - sin($latFrom) * cos($latTo) * cos($lonDelta), 2);
+        $b = sin($latFrom) * sin($latTo) + cos($latFrom) * cos($latTo) * cos($lonDelta);
+
+        $angle = atan2(sqrt($a), $b);
+        return $angle * $earthRadius;
     }
 
     /**
