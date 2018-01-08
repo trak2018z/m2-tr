@@ -141,7 +141,16 @@ class AnnouncementController extends Controller
                     "message" => "ANNOUNCEMENT_CREATED"
                 ]
             ], 201);
-        } catch(Exception|Throwable $e){
+        } catch(Exception $e){
+            Log::logError($e->getMessage(). " in ". $e->getFile(), intval($e->getCode()), $e->getLine());
+
+            return response()->json([
+                "success" => false,
+                "response" => [
+                    "message" => "ERROR_OCCURED"
+                ]
+            ], 500);
+        } catch(Throwable $e){
             Log::logError($e->getMessage(). " in ". $e->getFile(), intval($e->getCode()), $e->getLine());
 
             return response()->json([
